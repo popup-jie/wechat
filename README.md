@@ -27,8 +27,8 @@
     }
     
  对应的wxml文件内部
- 
- ```wxml
-    <swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
-    </swier>
- ```
+
+```html
+  <swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
+  </swier>
+```
