@@ -1,7 +1,7 @@
 # wechat
 
-  微信小程序组件
-    swiper组件版本1.0
+#微信小程序组件
+  swiper组件版本1.0
 
     list 数据源
     itemHeight 组件高度
