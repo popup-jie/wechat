@@ -12,10 +12,11 @@
     interval 播放间隔
     speed 播放速度
     dotsClick 圆点是否可点
+    
 可接受函数回调
 
-    MoveEnd 滚动结束
-    ItemClick 当前滚屏点击
+    MoveEnd 滚动结束
+    ItemClick 当前滚屏点击
 
 在需要引用组件的json内部
 
