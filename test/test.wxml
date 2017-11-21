@@ -1,0 +1,3 @@
+<swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
+
+</swier>
