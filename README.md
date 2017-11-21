@@ -23,7 +23,7 @@
       "swier": "/components/swier/swier"
     }
     
- 组件名字可自定义
+ 对应的wxml文件内部
  
     <swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
     </swier>
