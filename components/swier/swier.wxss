@@ -1,0 +1,51 @@
+.swier {
+  position: relative;
+  overflow: hidden;
+}
+
+.swier-wrapper {
+  width: 100%;
+}
+
+.swier-item {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.swier-item-img {
+  width: 100%;
+  height: 100%;
+}
+
+.swier-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.swier-dots .dots {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 4px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.swier-dots .dots.active {
+  background: #fff;
+  width: 18px;
+  border-radius: 14px;
+}
+
+.default-hover-class {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.fixed {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}

@@ -1,0 +1,11 @@
+<view class='swier' style='height:{{itemHeight}}px;'>
+  <view class='swier-wrapper' style='{{styles}};{{transform}}' capture-bind:touchstart='_SwierStart' catchtouchmove='_SwierMove' catchtouchend='_SwierEnd' catchtouchcancel="_SwierCancel">
+    <view class='swier-item' data-id="{{index}}" wx:for="{{list}}" style='{{itemStyle}}' capture-catch:tap='_clickItem' wx:key="{{index}}">
+      <view hover-class='{{hoverClass}}' class='fixed'></view>
+      <image src="{{item}}" class='swier-item-img'></image>
+    </view>
+  </view>
+  <view class='swier-dots'>
+    <view capture-catch:tap="_dotsClick" data-id='{{index}}' class="dots {{active == index ? 'active' : ''}}" wx:for="{{ list.length - 2 }}" wx:key="{{index}}"></view>
+  </view>
+</view>
