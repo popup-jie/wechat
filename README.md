@@ -1,8 +1,7 @@
-# wechat
-
-#微信小程序组件
-  swiper组件版本1.0
-
+# 微信小程序组件
+#swiper组件版本1.0
+   可接受参数如下：
+   
     list 数据源
     itemHeight 组件高度
     clientWidth 组件宽度
