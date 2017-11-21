@@ -21,14 +21,15 @@
     ItemClick 当前滚屏点击
 
 在需要引用组件的json内部
-
+```json
     "usingComponents": {
       "swier": "/components/swier/swier"
     }
+```
     
  对应的wxml文件内部
 
 ```html
-  <swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
-  </swier>
+<swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
+</swier>
 ```
