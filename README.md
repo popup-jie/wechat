@@ -11,7 +11,8 @@
     autoPlay 自动播放
     interval 播放间隔
     speed 播放速度
-    dotsClick 圆点是否可点
+    dotsClick 圆点是否可点
+
 
 可接受函数回调
 
