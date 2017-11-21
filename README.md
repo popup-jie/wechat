@@ -1,5 +1,6 @@
 # 微信小程序组件
-#swiper组件版本1.0
+
+## swiper组件版本1.0
 
 可接受参数如下：
 
@@ -27,6 +28,7 @@
     
  对应的wxml文件内部
  
+ ```wxml
     <swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
     </swier>
- 
+ ```
