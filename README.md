@@ -31,6 +31,6 @@ circular 是否衔接播放，若值为true时，不能循环播放
  对应的wxml文件内部
 
 ```html
-<swier list="{{list}}" bind:MoveEnd="send" bind:Click="clickItem" bind:ItemClick="ItemClick">
+<swier list="{{list}}" bind:MoveEnd="send" bind:ItemClick="ItemClick">
 </swier>
 ```
