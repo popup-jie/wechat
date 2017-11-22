@@ -14,7 +14,7 @@
    dotsClick 圆点是否可点
 
   版本1.1 新增 衔接播放
-  
+
   版本2.0
     需求：
         增加 -> 无缝连接滚动
@@ -174,8 +174,7 @@ Component({
     },
     //意外打断
     _SwierCancel() {
-      //this._Move()
-      this._backFnx()
+      !this.data.circular ? this._Move() : this._backFnx()
     },
     _Move() {
       this._changeIndex()
