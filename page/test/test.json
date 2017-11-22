@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "swier": "/components/swier/swier"
+  },
+  "enablePullDownRefresh": false
+}
