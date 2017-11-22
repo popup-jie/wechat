@@ -13,6 +13,7 @@ autoPlay 自动播放
 interval 播放间隔
 speed 播放速度
 dotsClick 圆点是否可点
+circular 是否衔接播放，若值为true时，不能循环播放
 ```
 可接受函数回调
 
