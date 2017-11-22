@@ -13,11 +13,12 @@
    speed 播放速度
    dotsClick 圆点是否可点
 
+  版本1.1 新增 衔接播放
+  
   版本2.0
     需求：
         增加 -> 无缝连接滚动
         增加 -> 是否循环loop
-        增加 -> 无限衔接播放
         增加 -> 圆点样式
   
   版本3.0
@@ -27,11 +28,12 @@
 */
 const EVENTOPTION = { bubbles: true, composed: true }
 let transformStr = ''
-let minSpwierWidth = '' // X轴拖动多少可移动
-let allowSpwierHeight = ''// Y轴拖动多少可移动
+let minSpwierAttr = '' // X轴拖动多少可移动
 let $computedAttr = 0 //当前宽||高
 let translateAttr = 0 //当前偏移距离，X || Y
 let $triggerEvent = false //是否允许派发
+
+let springback = 5 // 倍率
 Component({
   /**
    * 组件的属性列表
@@ -72,6 +74,10 @@ Component({
     dotsClick: { //小圆点点击
       type: Boolean,
       value: true
+    },
+    circular: { //采用衔接
+      type: Boolean,
+      value: false
     }
   },
 
@@ -91,7 +97,7 @@ Component({
    */
   methods: {
     _SwierStart(e) {
-      this.setData({
+      !this.data.circular && this.setData({
         transform: computedTranslateX(this.data.vertical)
       })
       clearTimeout(this.timer)
@@ -112,30 +118,64 @@ Component({
     _SwierEnd(e) {
 
       //鼠标向左拖动 鼠标向上拖动
-      if (this.data.touches.newX < -minSpwierWidth && !this.data.vertical || this.data.touches.newY < -allowSpwierHeight && this.data.vertical) {
-        translateAttr -= $computedAttr
-
-        $triggerEvent = true
+      if (this.data.touches.newX < -minSpwierAttr && !this.data.vertical || this.data.touches.newY < -minSpwierAttr && this.data.vertical) {
+        let am = this.data.circular ? this.data.touches.newX * springback : -$computedAttr
+        this._changeTransformX(am)
       }
       //鼠标向右拖动 鼠标向下拖动
-      else if (this.data.touches.newX > minSpwierWidth && !this.data.vertical || this.data.touches.newY > allowSpwierHeight && this.data.vertical) {
-        translateAttr += $computedAttr
-
-        $triggerEvent = true
+      else if (this.data.touches.newX > minSpwierAttr && !this.data.vertical || this.data.touches.newY > minSpwierAttr && this.data.vertical) {
+        let am = this.data.circular ? this.data.touches.newX * springback : $computedAttr
+        this._changeTransformX(am)
       }
-      this._Move()
+      !this.data.circular && this._Move()
+      this.data.circular && this._circularPlay()
+      this.setData({
+        touches: {}
+      })
+    },
+    //改变偏移
+    _changeTransformX(newVal) {
+      translateAttr += newVal
+      $triggerEvent = true
     },
     //改变currentIndex  //移动结束
     _changeIndex() {
-      let _style = Makequeen(this.data.vertical, this.data.list.length);
+      let _style = Makequeen(this.data.vertical, this.data.list.length, this.data.circular);
       this.setData(_style)
 
       $triggerEvent && (this.triggerEvent('MoveEnd', { currentIndex: this.data.active }, EVENTOPTION), $triggerEvent = false)
 
     },
+    //衔接播放
+    _circularPlay() {
+
+      if ($triggerEvent) {
+        translateAttr = Math.min(minSpwierAttr - 1, Math.max(translateAttr, (-$computedAttr * (this.data.list.length - 1)) - (minSpwierAttr + 1)))
+      }
+      this._changeIndex()
+      this._backFnx()
+    },
+    //回弹
+    _backFnx() {
+
+      let _x = Math.abs(translateAttr % $computedAttr)
+
+      if (translateAttr > 0) {
+        translateAttr = 0
+      } else if (Math.abs(translateAttr) > Math.abs(-$computedAttr * (this.data.list.length - 1))) {
+        translateAttr = -$computedAttr * (this.data.list.length - 1)
+      } else {
+        translateAttr = _x > minSpwierAttr ? translateAttr + _x - $computedAttr : translateAttr + _x
+      }
+
+      setTimeout(() => {
+        this._changeIndex()
+      }, 500)
+    },
     //意外打断
     _SwierCancel() {
-      this._Move()
+      //this._Move()
+      this._backFnx()
     },
     _Move() {
       this._changeIndex()
@@ -154,8 +194,14 @@ Component({
     //小圆点点击
     _dotsClick(event) {
       clearTimeout(this.timer)
-      translateAttr = -(parseInt(event.currentTarget.dataset.id + 1)) * $computedAttr
-      this._Move()
+      if (!this.data.circular) {
+        translateAttr = parseInt(event.currentTarget.dataset.id + 1) * -$computedAttr
+        this._Move()
+      } else {
+        $triggerEvent = true
+        translateAttr = parseInt(event.currentTarget.dataset.id) * -$computedAttr
+        this._circularPlay()
+      }
     },
     //循环播放
     _loop() {
@@ -172,7 +218,7 @@ Component({
     //初始化
     _init() {
       //如果循环播放则前后加，并且移动到数组下标为1
-      this._loop()
+      !this.data.circular && this._loop()
       //是否自动播放
       this.data.autoPlay && this._AutoPlay()
       let _style = scale(this.data.vertical, this.data.list.length)
@@ -194,8 +240,7 @@ Component({
     $computedAttr = !this.data.vertical ? (this.data.clientWidth || am.windowWidth) : this.data.itemHeight
     //宽 || 高
 
-    minSpwierWidth = $computedAttr / 3
-    allowSpwierHeight = $computedAttr / 3
+    minSpwierAttr = $computedAttr / 3
     transformStr = `transform-origin:50% 50% 0px;transition:transform ${this.data.speed}ms ease-out 0ms`
     this._init()
   }
@@ -222,10 +267,10 @@ function computedTranslateX(vertical, value) {
 }
 
 
-function Makequeen(vertical, len) {
+function Makequeen(vertical, len, circular) {
   return {
     transform: computedTranslateX(vertical) + `${transformStr}`,
-    touches: {},
-    active: translateAttr === 0 ? len - 3 : (Math.abs(translateAttr) - $computedAttr) / $computedAttr % (len - 2)
+    active: !circular ? (translateAttr === 0 ? len - 3 : (Math.abs(translateAttr) - $computedAttr) / $computedAttr % (len - 2)) : (Math.abs(translateAttr)) / $computedAttr
+
   }
 }
